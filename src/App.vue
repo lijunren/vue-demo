@@ -50,9 +50,11 @@ export default {
     bottom:0;
     left: 0;
     right: 0;
+    bottom: 0;
     padding-top: 1.6vw;
     text-align: center;
     height: 16vw;
+    background-color: #fff;
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid rgba($color: #000, $alpha: 0.1);
