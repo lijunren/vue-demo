@@ -15,16 +15,16 @@ let menuList = () => {
 }
 
 let number = Random.integer(1000, 5000)
-
+let count = Random.integer(1, 20)
 let shopList = () => {
   let template = []
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < count; i++) {
     let tem = {
       img: Random.dataImage('130x130'),
       isBrand: Random.boolean(),
       singList: ['广告', '票'],
       name: Random.ctitle(),
-      rate: Random.float(0, 5, 1, 1),
+      rate: Random.float(0, 4.99999, 1, 1),
       goodNum: Random.integer(0, 10000),
       startM: Random.integer(0, 50),
       distributionFee: Random.integer(0, 10),
@@ -62,6 +62,19 @@ let shopList = () => {
   }
   return template
 }
+
+let addressList = () => {
+  let template = []
+  for (let i = 0; i < 12; i++) {
+    let tem = {
+      title: Random.ctitle(),
+      detail: Random.csentence(5, 40)
+    }
+    template.push(tem)
+  }
+  return template
+}
 Mock.mock('api/getMenu', menuList)
 Mock.mock('api/getNumber', number)
 Mock.mock('api/getShopList', shopList)
+Mock.mock('api/getAddpList', addressList)

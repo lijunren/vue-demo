@@ -1,112 +1,115 @@
 <template>
   <div class="home">
-    <header class="head">
-      <div class="head-1">
-        <span class="he-1"><i class="iconfont icon-dizhi"></i></span>
-        <span class="he-2">{{msg}}</span>
-        <span class="he-3"><i class="iconfont icon-jiantouarrow486"></i></span>
-      </div>
-      <div class="head-2">
-        <span><i class="iconfont icon-sousuo"></i>搜索饿了么商家、商品名称</span>
-      </div>
-    </header>
-    <div class="headSwiper swiper-container">
-      <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,index) in swiperData" :key="index">
-            <a :href="item.href"><img :src="item.img" alt="" width="100%"></a>
-          </div>
-      </div>
-      <div class="swiper-pagination"  slot="pagination"></div>
-    </div>
-    <div class="mainContent">
-      <div class="menuSwiper swiper-container">
+    <div>
+      <header class="head">
+        <div class="head-1" @click="showAddress('')">
+          <span class="he-1"><i class="iconfont icon-dizhi"></i></span>
+          <span class="he-2">{{msg}}</span>
+          <span class="he-3"><i class="iconfont icon-jiantouarrow486"></i></span>
+        </div>
+        <div class="head-2">
+          <span><i class="iconfont icon-sousuo"></i>搜索饿了么商家、商品名称</span>
+        </div>
+      </header>
+      <div class="headSwiper swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide menubar" v-for="(item,index) in menuList" :key="index">
-            <div class="menuInner" v-for="(munu, index) in item" :key="index">
-              <a :href="munu.src">
-                <img :src="munu.img" :title="munu.name" width="100%">
-                <p>{{munu.name}}</p>
-              </a>
+            <div class="swiper-slide" v-for="(item,index) in swiperData" :key="index">
+              <a :href="item.href"><img :src="item.img" alt="" width="100%"></a>
             </div>
-          </div>
         </div>
         <div class="swiper-pagination"  slot="pagination"></div>
       </div>
-      <div class="recommend">
-        <a class="recommendList" href="javasctipt:void(0)">
-          <h4 class="title">限量抢购</h4>
-          <p class="description">超值美味9.9元起</p>
-          <p class="activity"><span class="red">{{personNum}}人</span>正在抢 ></p>
-          <div class="imgs">
-            <img src="//fuss10.elemecdn.com/b/e1/0fa0ed514c093a7138b0b9a50d61fpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" alt="">
-          </div>
-        </a>
-        <a class="recommendList" href="javasctipt:void(0)">
-          <h4 class="title red">品质套餐</h4>
-          <p class="description">搭配齐全吃得好</p>
-          <p class="activity caramel">立即抢购 ></p>
-           <div class="imgs">
-            <img src="//fuss10.elemecdn.com/d/d4/16ff085900d62b8d60fa7e9c6b65dpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" alt="">
-          </div>
-        </a>
-      </div>
-      <div class="shopList">
-        <div class="shopListTitle">推荐商家</div>
-        <ul class="listContent">
-          <li class="shopDescription" v-for="(item, index) in shopList" :key="index">
-            <div class="desc-1">
-              <div class="descImg">
-                <img :src="item.img" :alt="item.name">
-              </div>
-              <div class="descText">
-                <section class="title">
-                  <h4 class="shopName">
-                    <i class="shopBrand" content="品牌" v-if="item.isBrand"></i>
-                    <span class="name">{{item.name}}</span>
-                  </h4>
-                  <ul class="singlist">
-                    <li class="sign" :content="item1" v-for="(item1, index1) in item.singlist" :key="index1"></li>
-                  </ul>
-                </section>
-                <section class="rateInfo">
-                  <div class="rateImg">
-                    <div class="rate-gray">
-                      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTU0LjAxNyA4LjA3MmwtMi41NTIgMS41NjFjLS40NzYuMjkxLS43NTguMDk2LS42MjYtLjQ1NWwuNjk2LTIuOTA5LTIuMjczLTEuOTQ0Yy0uNDI0LS4zNjItLjMyNS0uNjkxLjIzOS0uNzM2bDIuOTgyLS4yMzdMNTMuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMGwxLjE0NiAyLjc2MyAyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNmwtMi4yNzQgMS45NDQuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2em0tNDggMEwzLjQ2NSA5LjYzM2MtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0w1LjYzLjU4OWMuMjEzLS41MTUuNTU3LS41MjMuNzc0IDBMNy41NSAzLjM1MmwyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNkw4LjQ5NyA2LjI2OWwuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2em0xMiAwbC0yLjU1MiAxLjU2MWMtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0wxNy42My41ODljLjIxMy0uNTE1LjU1Ny0uNTIzLjc3NCAwbDEuMTQ2IDIuNzYzIDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2bC0yLjI3NCAxLjk0NC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6bTEyIDBsLTIuNTUyIDEuNTYxYy0uNDc2LjI5MS0uNzU4LjA5Ni0uNjI2LS40NTVsLjY5Ni0yLjkwOS0yLjI3My0xLjk0NGMtLjQyNC0uMzYyLS4zMjUtLjY5MS4yMzktLjczNmwyLjk4Mi0uMjM3TDI5LjYzLjU4OWMuMjEzLS41MTUuNTU3LS41MjMuNzc0IDBsMS4xNDYgMi43NjMgMi45ODIuMjM3Yy41NTYuMDQ0LjY3LjM2OC4yNC43MzZsLTIuMjc0IDEuOTQ0LjY5NiAyLjkxYy4xMy41NDItLjE0My43NS0uNjI2LjQ1NGwtMi41NTEtMS41NnptMTIgMGwtMi41NTIgMS41NjFjLS40NzYuMjkxLS43NTguMDk2LS42MjYtLjQ1NWwuNjk2LTIuOTA5LTIuMjczLTEuOTQ0Yy0uNDI0LS4zNjItLjMyNS0uNjkxLjIzOS0uNzM2bDIuOTgyLS4yMzdMNDEuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMGwxLjE0NiAyLjc2MyAyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNmwtMi4yNzQgMS45NDQuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2eiIgZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" alt="">
-                    </div>
-                    <div class="rateActive">
-                      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIwJSIgeTE9IjUwJSIgeTI9IjUwJSIgaWQ9ImEiPjxzdG9wIHN0b3AtY29sb3I9IiNGRkRFMDAiIG9mZnNldD0iMCUiLz48c3RvcCBzdG9wLWNvbG9yPSIjRkZCMDAwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNNTQuMDE3IDguMDcybC0yLjU1MiAxLjU2MWMtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0w1My42My41ODljLjIxMy0uNTE1LjU1Ny0uNTIzLjc3NCAwbDEuMTQ2IDIuNzYzIDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2bC0yLjI3NCAxLjk0NC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6bS00OCAwTDMuNDY1IDkuNjMzYy0uNDc2LjI5MS0uNzU4LjA5Ni0uNjI2LS40NTVsLjY5Ni0yLjkwOS0yLjI3My0xLjk0NGMtLjQyNC0uMzYyLS4zMjUtLjY5MS4yMzktLjczNmwyLjk4Mi0uMjM3TDUuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMEw3LjU1IDMuMzUybDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2TDguNDk3IDYuMjY5bC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6bTEyIDBsLTIuNTUyIDEuNTYxYy0uNDc2LjI5MS0uNzU4LjA5Ni0uNjI2LS40NTVsLjY5Ni0yLjkwOS0yLjI3My0xLjk0NGMtLjQyNC0uMzYyLS4zMjUtLjY5MS4yMzktLjczNmwyLjk4Mi0uMjM3TDE3LjYzLjU4OWMuMjEzLS41MTUuNTU3LS41MjMuNzc0IDBsMS4xNDYgMi43NjMgMi45ODIuMjM3Yy41NTYuMDQ0LjY3LjM2OC4yNC43MzZsLTIuMjc0IDEuOTQ0LjY5NiAyLjkxYy4xMy41NDItLjE0My43NS0uNjI2LjQ1NGwtMi41NTEtMS41NnptMTIgMGwtMi41NTIgMS41NjFjLS40NzYuMjkxLS43NTguMDk2LS42MjYtLjQ1NWwuNjk2LTIuOTA5LTIuMjczLTEuOTQ0Yy0uNDI0LS4zNjItLjMyNS0uNjkxLjIzOS0uNzM2bDIuOTgyLS4yMzdMMjkuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMGwxLjE0NiAyLjc2MyAyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNmwtMi4yNzQgMS45NDQuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2em0xMiAwbC0yLjU1MiAxLjU2MWMtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0w0MS42My41ODljLjIxMy0uNTE1LjU1Ny0uNTIzLjc3NCAwbDEuMTQ2IDIuNzYzIDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2bC0yLjI3NCAxLjk0NC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=" alt="">
-                    </div>
-                  </div>
-                  <span class="rateNum">{{item.rate}}</span>
-                  <span class="oederNum">月售{{item.goodNum}}单</span>
-                </section>
-                <section class="distributionInfo">
-                  <div class="distributionMoney">
-                    <span class="distribution1">¥{{item.startM}}起送</span>
-                    <span class="verticalLine"></span>
-                    <span class="distribution1">配送费¥{{item.distributionFee}}</span>
-                  </div>
-                  <div class="distributionTime">
-                    <span class="distribution1">{{item.distance}}km</span>
-                    <span class="verticalLine"></span>
-                    <span class="distribution1">{{item.time}}分钟</span>
-                  </div>
-                </section>
+      <div class="mainContent">
+        <div class="menuSwiper swiper-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide menubar" v-for="(item,index) in menuList" :key="index">
+              <div class="menuInner" v-for="(munu, index) in item" :key="index">
+                <a :href="munu.src">
+                  <img :src="munu.img" :title="munu.name" width="100%">
+                  <p>{{munu.name}}</p>
+                </a>
               </div>
             </div>
-            <div class="desc-2">
-              <section class="shopOther">
-                <span class="goodshop red" v-show="item.idGoodShop"><i class="iconfont icon-koubei"></i> 口碑人气好店</span>
-                <span>
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgLjI1TDI4MCAwIiBzdHJva2U9IiNDQ0MiIHN0cm9rZS13aWR0aD0iLjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1kYXNoYXJyYXk9IjEiLz48L3N2Zz4=" alt="">
-                </span>
-                <shop-list :active="item.active"></shop-list>
-              </section>
+          </div>
+          <div class="swiper-pagination"  slot="pagination"></div>
+        </div>
+        <div class="recommend">
+          <a class="recommendList" href="javasctipt:void(0)">
+            <h4 class="title">限量抢购</h4>
+            <p class="description">超值美味9.9元起</p>
+            <p class="activity"><span class="red">{{personNum}}人</span>正在抢 ></p>
+            <div class="imgs">
+              <img src="//fuss10.elemecdn.com/b/e1/0fa0ed514c093a7138b0b9a50d61fpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" alt="">
             </div>
-          </li>
-        </ul>
+          </a>
+          <a class="recommendList" href="javasctipt:void(0)">
+            <h4 class="title red">品质套餐</h4>
+            <p class="description">搭配齐全吃得好</p>
+            <p class="activity caramel">立即抢购 ></p>
+            <div class="imgs">
+              <img src="//fuss10.elemecdn.com/d/d4/16ff085900d62b8d60fa7e9c6b65dpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" alt="">
+            </div>
+          </a>
+        </div>
+        <div class="shopList">
+          <div class="shopListTitle">推荐商家</div>
+          <ul class="listContent">
+            <li class="shopDescription" v-for="(item, index) in shopList" :key="index">
+              <div class="desc-1">
+                <div class="descImg">
+                  <img :src="item.img" :alt="item.name">
+                </div>
+                <div class="descText">
+                  <section class="title">
+                    <h4 class="shopName">
+                      <i class="shopBrand" content="品牌" v-show="item.isBrand"></i>
+                      <span class="name">{{item.name}}</span>
+                    </h4>
+                    <ul class="singlist">
+                      <li class="sign" :content="item1" v-for="(item1, index1) in item.singlist" :key="index1"></li>
+                    </ul>
+                  </section>
+                  <section class="rateInfo">
+                    <div class="rateImg">
+                      <div class="rate-gray">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTU0LjAxNyA4LjA3MmwtMi41NTIgMS41NjFjLS40NzYuMjkxLS43NTguMDk2LS42MjYtLjQ1NWwuNjk2LTIuOTA5LTIuMjczLTEuOTQ0Yy0uNDI0LS4zNjItLjMyNS0uNjkxLjIzOS0uNzM2bDIuOTgyLS4yMzdMNTMuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMGwxLjE0NiAyLjc2MyAyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNmwtMi4yNzQgMS45NDQuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2em0tNDggMEwzLjQ2NSA5LjYzM2MtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0w1LjYzLjU4OWMuMjEzLS41MTUuNTU3LS41MjMuNzc0IDBMNy41NSAzLjM1MmwyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNkw4LjQ5NyA2LjI2OWwuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2em0xMiAwbC0yLjU1MiAxLjU2MWMtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0wxNy42My41ODljLjIxMy0uNTE1LjU1Ny0uNTIzLjc3NCAwbDEuMTQ2IDIuNzYzIDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2bC0yLjI3NCAxLjk0NC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6bTEyIDBsLTIuNTUyIDEuNTYxYy0uNDc2LjI5MS0uNzU4LjA5Ni0uNjI2LS40NTVsLjY5Ni0yLjkwOS0yLjI3My0xLjk0NGMtLjQyNC0uMzYyLS4zMjUtLjY5MS4yMzktLjczNmwyLjk4Mi0uMjM3TDI5LjYzLjU4OWMuMjEzLS41MTUuNTU3LS41MjMuNzc0IDBsMS4xNDYgMi43NjMgMi45ODIuMjM3Yy41NTYuMDQ0LjY3LjM2OC4yNC43MzZsLTIuMjc0IDEuOTQ0LjY5NiAyLjkxYy4xMy41NDItLjE0My43NS0uNjI2LjQ1NGwtMi41NTEtMS41NnptMTIgMGwtMi41NTIgMS41NjFjLS40NzYuMjkxLS43NTguMDk2LS42MjYtLjQ1NWwuNjk2LTIuOTA5LTIuMjczLTEuOTQ0Yy0uNDI0LS4zNjItLjMyNS0uNjkxLjIzOS0uNzM2bDIuOTgyLS4yMzdMNDEuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMGwxLjE0NiAyLjc2MyAyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNmwtMi4yNzQgMS45NDQuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2eiIgZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+" alt="">
+                      </div>
+                      <div class="rateActive" :style="{width: `${item.rate/5 * 100}%`}">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIwJSIgeTE9IjUwJSIgeTI9IjUwJSIgaWQ9ImEiPjxzdG9wIHN0b3AtY29sb3I9IiNGRkRFMDAiIG9mZnNldD0iMCUiLz48c3RvcCBzdG9wLWNvbG9yPSIjRkZCMDAwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNNTQuMDE3IDguMDcybC0yLjU1MiAxLjU2MWMtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0w1My42My41ODljLjIxMy0uNTE1LjU1Ny0uNTIzLjc3NCAwbDEuMTQ2IDIuNzYzIDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2bC0yLjI3NCAxLjk0NC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6bS00OCAwTDMuNDY1IDkuNjMzYy0uNDc2LjI5MS0uNzU4LjA5Ni0uNjI2LS40NTVsLjY5Ni0yLjkwOS0yLjI3My0xLjk0NGMtLjQyNC0uMzYyLS4zMjUtLjY5MS4yMzktLjczNmwyLjk4Mi0uMjM3TDUuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMEw3LjU1IDMuMzUybDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2TDguNDk3IDYuMjY5bC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6bTEyIDBsLTIuNTUyIDEuNTYxYy0uNDc2LjI5MS0uNzU4LjA5Ni0uNjI2LS40NTVsLjY5Ni0yLjkwOS0yLjI3My0xLjk0NGMtLjQyNC0uMzYyLS4zMjUtLjY5MS4yMzktLjczNmwyLjk4Mi0uMjM3TDE3LjYzLjU4OWMuMjEzLS41MTUuNTU3LS41MjMuNzc0IDBsMS4xNDYgMi43NjMgMi45ODIuMjM3Yy41NTYuMDQ0LjY3LjM2OC4yNC43MzZsLTIuMjc0IDEuOTQ0LjY5NiAyLjkxYy4xMy41NDItLjE0My43NS0uNjI2LjQ1NGwtMi41NTEtMS41NnptMTIgMGwtMi41NTIgMS41NjFjLS40NzYuMjkxLS43NTguMDk2LS42MjYtLjQ1NWwuNjk2LTIuOTA5LTIuMjczLTEuOTQ0Yy0uNDI0LS4zNjItLjMyNS0uNjkxLjIzOS0uNzM2bDIuOTgyLS4yMzdMMjkuNjMuNTg5Yy4yMTMtLjUxNS41NTctLjUyMy43NzQgMGwxLjE0NiAyLjc2MyAyLjk4Mi4yMzdjLjU1Ni4wNDQuNjcuMzY4LjI0LjczNmwtMi4yNzQgMS45NDQuNjk2IDIuOTFjLjEzLjU0Mi0uMTQzLjc1LS42MjYuNDU0bC0yLjU1MS0xLjU2em0xMiAwbC0yLjU1MiAxLjU2MWMtLjQ3Ni4yOTEtLjc1OC4wOTYtLjYyNi0uNDU1bC42OTYtMi45MDktMi4yNzMtMS45NDRjLS40MjQtLjM2Mi0uMzI1LS42OTEuMjM5LS43MzZsMi45ODItLjIzN0w0MS42My41ODljLjIxMy0uNTE1LjU1Ny0uNTIzLjc3NCAwbDEuMTQ2IDIuNzYzIDIuOTgyLjIzN2MuNTU2LjA0NC42Ny4zNjguMjQuNzM2bC0yLjI3NCAxLjk0NC42OTYgMi45MWMuMTMuNTQyLS4xNDMuNzUtLjYyNi40NTRsLTIuNTUxLTEuNTZ6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=" alt="">
+                      </div>
+                    </div>
+                    <span class="rateNum">{{item.rate}}</span>
+                    <span class="oederNum">月售{{item.goodNum}}单</span>
+                  </section>
+                  <section class="distributionInfo">
+                    <div class="distributionMoney">
+                      <span class="distribution1">¥{{item.startM}}起送</span>
+                      <span class="verticalLine"></span>
+                      <span class="distribution1">配送费¥{{item.distributionFee}}</span>
+                    </div>
+                    <div class="distributionTime">
+                      <span class="distribution1">{{item.distance}}km</span>
+                      <span class="verticalLine"></span>
+                      <span class="distribution1">{{item.time}}分钟</span>
+                    </div>
+                  </section>
+                </div>
+              </div>
+              <div class="desc-2">
+                <section class="shopOther">
+                  <span class="goodshop red" v-show="item.idGoodShop"><i class="iconfont icon-koubei"></i> 口碑人气好店</span>
+                  <span>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgLjI1TDI4MCAwIiBzdHJva2U9IiNDQ0MiIHN0cm9rZS13aWR0aD0iLjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1kYXNoYXJyYXk9IjEiLz48L3N2Zz4=" alt="">
+                  </span>
+                  <shop-list :active="item.active"></shop-list>
+                </section>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+    <select-address :isShow='isShow' @showfn="showAddress"></select-address> // 子组件触发的事件绑定在这里
   </div>
 </template>
 
@@ -115,6 +118,8 @@ import 'swiper/dist/css/swiper.css'
 import Swiper from 'swiper'
 import Axios from 'axios'
 import ShopList from '@/components/main/shopList'
+import SelectAddress from '@/components/selectAddress/selectAddress'
+import { eventLister } from '@/assets/js/common.js'
 let headSwipers
 let menuSwiper
 export default {
@@ -134,11 +139,13 @@ export default {
           href: 'www.hao123.com'
         }
       ],
-      menuList: []
+      menuList: [],
+      isShow: false
     }
   },
   components: {
-    shopList: ShopList
+    shopList: ShopList,
+    selectAddress: SelectAddress
   },
   created () {
     Axios.get('api/getMenu')
@@ -208,7 +215,7 @@ export default {
     },
     scroll () {
       let he = document.getElementsByClassName('head-1')[0].clientHeight
-      window.addEventListener('scroll', () => {
+      eventLister(document, 'scroll', () => {
         let scrollTop = 0
         let search = document.getElementsByClassName('head-2')[0]
         if (document.documentElement && document.documentElement.scrollTop) {
@@ -222,6 +229,10 @@ export default {
           search.classList.remove('scroll')
         }
       })
+    },
+    showAddress (text) {
+      this.isShow = !this.isShow
+      this.msg = text
     }
   }
 }
@@ -230,6 +241,7 @@ export default {
 <style lang="scss" scoped>
 @import "./../../assets/css/icon/iconfont.css";
 .home{
+  overflow-y: hidden;
   img{
     width: 100%;
   }
@@ -458,6 +470,7 @@ export default {
                     }
                   }
                   .name{
+                    font-size: 0.9375rem;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
