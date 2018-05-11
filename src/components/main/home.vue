@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" ref="home">
     <div>
       <header class="head">
         <div class="head-1" @click="showAddress('')">
@@ -7,7 +7,7 @@
           <span class="he-2">{{msg}}</span>
           <span class="he-3"><i class="iconfont icon-jiantouarrow486"></i></span>
         </div>
-        <div class="head-2">
+        <div class="head-2" @click="toSearch">
           <span><i class="iconfont icon-sousuo"></i>搜索饿了么商家、商品名称</span>
         </div>
       </header>
@@ -110,6 +110,7 @@
       </div>
     </div>
     <select-address :isShow='isShow' @showfn="showAddress"></select-address> // 子组件触发的事件绑定在这里
+    <div class="backTop" v-show="backShow" @click.stop="backTops"><i class="iconfont icon-top"></i></div>
   </div>
 </template>
 
@@ -140,7 +141,8 @@ export default {
         }
       ],
       menuList: [],
-      isShow: false
+      isShow: false,
+      backShow: false
     }
   },
   components: {
@@ -166,13 +168,7 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-    Axios.get('api/getShopList')
-      .then((res) => {
-        this.shopList = res.data
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    this.getSHopList()
   },
   mounted () {
     this.headSwiper()
@@ -215,24 +211,51 @@ export default {
     },
     scroll () {
       let he = document.getElementsByClassName('head-1')[0].clientHeight
+      let bodyH = document.documentElement.clientHeight
       eventLister(document, 'scroll', () => {
         let scrollTop = 0
         let search = document.getElementsByClassName('head-2')[0]
+        let contentH = this.$refs.home.clientHeight
+        let dis = 0
         if (document.documentElement && document.documentElement.scrollTop) {
           scrollTop = document.documentElement.scrollTop
         } else if (document.body) {
           scrollTop = document.body.scrollTop
         }
+        dis = contentH - scrollTop
         if (scrollTop >= he) {
           search.classList.add('scroll')
         } else {
           search.classList.remove('scroll')
+        }
+        if (scrollTop >= bodyH) {
+          this.backShow = true
+        } else {
+          this.backShow = false
+        }
+        if (dis < bodyH + 20) {
+          this.getSHopList()
         }
       })
     },
     showAddress (text) {
       this.isShow = !this.isShow
       this.msg = text
+    },
+    getSHopList () {
+      Axios.get('api/getShopList')
+        .then((res) => {
+          this.shopList.push(...res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    backTops () {
+      window.scrollTo(0, 0)
+    },
+    toSearch () {
+      this.$router.push('/search')
     }
   }
 }
@@ -593,6 +616,19 @@ export default {
         }
       }
     }
+  }
+  .backTop{
+    position: fixed;
+    right: 5vw;
+    bottom: 18vw;
+    width: 10vw;
+    height: 10vw;
+    line-height: 10vw;
+    text-align: center;
+    border: solid #d3d3d3 0.333333vw;
+    border-radius: 100%;
+    color: #d3d3d3;
+    z-index: 9999;
   }
 }
 </style>

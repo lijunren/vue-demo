@@ -6,7 +6,9 @@ import Home from '@/components/main/home'
 import Discover from '@/components/main/discoverRegular'
 import Order from '@/components/main/orderRegular'
 import Profile from '@/components/main/profileRegular'
-
+import Search from '@/components/search/search'
+// import Login from '@/components/login/login'
+import login from './login.js'
 Vue.use(Router)
 
 export default new Router({
@@ -44,7 +46,12 @@ export default new Router({
               component: Profile
             }
           ]
-        }
+        },
+        {
+          path: 'search',
+          component: Search
+        },
+        ...login
       ]
     }
   ]
