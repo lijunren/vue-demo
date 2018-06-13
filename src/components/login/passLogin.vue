@@ -1,44 +1,46 @@
 <template>
   <div class="mainContent">
     <section class="phone">
-      <input type="tel" placeholder="手机号" value="" v-model="telnum">
-      <button class="code" :disabled="dis" @click="logIn">获取验证码</button>
+      <input type="tel" placeholder="手机/邮箱/用户名" value="" v-model="user.ID">
     </section>
     <section class="phone">
-      <input type="number" placeholder="验证码" value="">
-    </section>
-    <section class="tips">
-      <p>温馨提示：未注册饿了么帐号的手机号，登录时将自动注册，且代表您已同意<a href="javascript:void(0);">《用户服务协议》</a></p>
+      <input type="password" placeholder="密码" value="" v-model="user.Password">
+      <div :class="['passSwitch', {open: open.type}]" @click="switchPass">
+        <div :class="['onOff', {opens: open.type}]"></div>
+       {{open.des}}
+      </div>
     </section>
     <section class="login">
-      <button>登录</button>
+      <button @click="loginFn">登录</button>
     </section>
     <p class="about">关于我们</p>
   </div>
 </template>
 
 <script>
+const CLOSE = '· · ·'
+const OPEN = 'abc'
 export default {
   name: 'PassLogin',
   data () {
     return {
-      telnum: '',
-      dis: true
-    }
-  },
-  watch: {
-    telnum (news, old) {
-      let reg = /^[1][3,4,5,7,8,9][0-9]{9}$/
-      if (reg.test(news)) {
-        this.dis = false
-      } else {
-        this.dis = true
+      user: {
+        ID: '',
+        Password: ''
+      },
+      open: {
+        type: false,
+        des: CLOSE
       }
     }
   },
   methods: {
-    logIn () {
-      console.log('登录成功！！！')
+    switchPass () {
+      this.open.type = !this.open.type
+      this.open.des = this.open.type ? OPEN : CLOSE
+    },
+    loginFn () {
+      console.log(this.user)
     }
   }
 }
@@ -63,26 +65,43 @@ export default {
       margin-top: 15px;
       width: 100%;
       height: 40px;
-      .code{
-        border: none;
-        outline: none;
-        background-color: rgba(255, 255, 255, 0);
+      .passSwitch{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
         position: absolute;
-        top: 0;
-        bottom: 0;
+        top: 14px;
         right: 10px;
-        font-size: 14px;
-        &.enable{
-          color: #333;
+        padding: 0 6px;
+        width: 30px;
+        height: 16px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        color: #999;
+        font-size: 12px;
+        .onOff{
+          position: absolute;
+          top: -1px;
+          left: -1px;
+          width: 16px;
+          height: 16px;
+          border: 1px solid #ddd;
+          border-radius: 50%;
+          background: #fff;
+          box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+          transition: all 0.3s;
+          &.opens{
+            transform: translateX(26px);
+            transition: all 0.3s;
+          }
+        }
+        &.open{
+          justify-content: flex-start;
+          color: #fff;
+          border-color: #3190e8;
+          background: #3190e8;
         }
       }
-    }
-    .tips{
-      position: relative;
-      margin-top: 15px;
-      width: 100%;
-      font-size: 14px;
-      color: #999;
     }
     .login{
       position: relative;

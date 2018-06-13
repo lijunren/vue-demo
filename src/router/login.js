@@ -9,7 +9,7 @@ export default [
   {
     path: '/login',
     component: Login,
-    redirect: '/login/passin',
+    redirect: '/login/messagein',
     children: [
       {
         path: 'passin',

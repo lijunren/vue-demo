@@ -80,13 +80,13 @@ export default {
         .then((res) => {
           this.addLists = res.data
           this.$nextTick(() => {
-            // console.log(findParent(this.$refs.content, '.addList').clientHeight, this.$refs.content.scrollHeight)
-            distance = findParent(this.$refs.content, '.addList').clientHeight - this.$refs.content.clientHeight
+            distance = findParent(this.$refs.content, '.addList').clientHeight - this.$refs.content.scrollHeight
           })
         }).catch((err) => {
           console.log(err)
         })
     },
+    
     listMove () {
       eventLister(this.$refs.content, 'touchstart',
         (e) => {
@@ -94,12 +94,13 @@ export default {
           e.cancelBubble = true
           let touch = event.targetTouches[0]
           startY = touch.clientY
-          this.$refs.content.style.transform = 'translateY(' + totalD + 'px)'
-          this.$refs.content.style.WebkitTransform = 'translateY(' + totalD + 'px)'
+          /* this.$refs.content.style.transform = 'translateY(' + totalD + 'px)'
+          this.$refs.content.style.WebkitTransform = 'translateY(' + totalD + 'px)' */
           debounce(this.touchMoveFn, 100, 150)()
         }
       )
     },
+      
     touchMoveFn () {
       eventLister(this.$refs.content, 'touchmove',
         (e) => {
@@ -112,11 +113,9 @@ export default {
           if (totalD > 100) {
             totalD = 90
           }
-          if (distance <= 0 && totalD < distance) {
-            totalD = distance
-          }/*  else if (totalD < -90) {
-            totalD = -90
-          } */
+          if (totalD <= 0 && totalD + 100 <= distance) {
+            totalD = distance - 150
+          }
           this.$refs.content.style.transform = 'translateY(' + totalD + 'px)'
           this.$refs.content.style.WebkitTransform = 'translateY(' + totalD + 'px)'
         }
@@ -128,12 +127,9 @@ export default {
           if (totalD > 0) {
             totalD = 0
           }
-          // console.log(totalD, distance, this.$refs.content.scrollHeight, this.$refs.content.getBoundingClientRect().bottom)
-          if (distance <= 0 && totalD <= distance) {
-            totalD = distance
-          } /* else if (totalD <= -90) {
-            totalD = 0
-          } */
+          if (totalD <= 0 && totalD + 100 <= distance) {
+            totalD = distance - 100
+          }
           this.$refs.content.style.transform = 'translateY(' + totalD + 'px)'
           this.$refs.content.style.WebkitTransform = 'translateY(' + totalD + 'px)'
         })
@@ -235,7 +231,7 @@ export default {
     height: 100%;
     .addList{
       height: 100%;
-      overflow: auto;
+      overflow: hidden;
       .addOne{
         background-color: #fff;
         padding: .293333rem .4rem;

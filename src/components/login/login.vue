@@ -5,8 +5,8 @@
     </div>
     <div class="loginContent">
       <div class="logSwitch">
-        <router-link class="passin" to="/login/passin" active-class="loginActive">密码登录</router-link>
         <router-link class="messagein" to="/login/messagein" active-class="loginActive">短信登录</router-link>
+        <router-link class="passin" to="/login/passin" active-class="loginActive">密码登录</router-link>
       </div>
       <div class="main">
         <router-view></router-view>
@@ -48,11 +48,11 @@ export default {
           border-bottom: 2px solid #2395ff;
         }
       }
-      .passin{
+      .messagein{
         text-align: right;
         margin: 0 5vw 0 30vw;
       }
-      .messagein{
+      .passin{
         margin: 0 30vw 0 5vw;
       }
     }
